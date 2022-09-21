@@ -14,8 +14,8 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<GyroscopeEvent>(
-        stream: SensorsPlatform.instance.gyroscopeEvents,
+      body: StreamBuilder<AccelerometerEvent>(
+        stream: SensorsPlatform.instance.accelerometerEvents,
         builder: (_, snapshot) {
           if(snapshot.hasData) {
             dx = dx + snapshot.data!.y;
