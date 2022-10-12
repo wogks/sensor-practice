@@ -9,26 +9,39 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  double dx = 100;
-  double dy = 100;
+  double dx = 30;
+  double dy = 30;
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: StreamBuilder<AccelerometerEvent>(
-        stream: SensorsPlatform.instance.accelerometerEvents,
-        builder: (_, snapshot) {
-          if(snapshot.hasData) {
-            dx = dx + snapshot.data!.y;
-            dy = dy + snapshot.data!.x;
-          }
-          return Transform.translate(
-            offset: Offset(dx, dy),
-            child: const CircleAvatar(
-              radius: 20,
-            ),
-          );
-        },
-      )
+      body: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            color: Colors.grey,
+            height: height,
+            width: width,
+          ),
+          StreamBuilder<AccelerometerEvent>(
+            stream: SensorsPlatform.instance.accelerometerEvents,
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                dx = dx + snapshot.data!.y;
+                dy = dy + snapshot.data!.x;
+              }
+              return Transform.translate(
+                offset: Offset(dx, dy),
+                child: const CircleAvatar(
+                  radius: 20,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
+
